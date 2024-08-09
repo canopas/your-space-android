@@ -50,18 +50,20 @@ class JourneyRepository @Inject constructor(
                 }
 
                 userState == UserState.STEADY.value -> {
+                    Timber.tag("LAT_LONG").d("saveLocationJourney: Steady User")
                     saveJourneyForSteadyUser(
-                        userId,
-                        extractedLocation,
-                        lastJourney
+                        currentUserId = userId,
+                        extractedLocation = extractedLocation,
+                        lastKnownJourney = lastJourney
                     )
                 }
 
                 userState == UserState.MOVING.value -> {
+                    Timber.tag("LAT_LONG").d("saveLocationJourney: Moving User")
                     saveJourneyForMovingUser(
-                        userId,
-                        extractedLocation,
-                        lastJourney
+                        currentUserId = userId,
+                        extractedLocation = extractedLocation,
+                        lastKnownJourney = lastJourney
                     )
                 }
             }
@@ -253,8 +255,8 @@ class JourneyRepository @Inject constructor(
                 journeyService.updateLastLocationJourney(
                     userId = currentUserId,
                     journey = lastKnownJourney.copy(
-                        to_longitude = extractedLocation.latitude,
-                        to_latitude = extractedLocation.longitude,
+                        to_longitude = extractedLocation.longitude,
+                        to_latitude = extractedLocation.latitude,
                         route_distance = lastKnownJourney.toLocationFromSteadyJourney().distanceTo(
                             extractedLocation
                         ).toDouble(),

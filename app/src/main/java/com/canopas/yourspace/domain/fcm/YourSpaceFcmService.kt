@@ -106,17 +106,19 @@ class YourSpaceFcmService : FirebaseMessagingService() {
                             val bitmap =
                                 if (profile.isNullOrEmpty()) null else getTrackBitmapFromUrl(profile)
                             sendNotification(
-                                this@YourSpaceFcmService,
-                                title,
-                                body,
-                                message.data,
-                                bitmap
+                                context = this@YourSpaceFcmService,
+                                title = title,
+                                body = body,
+                                data = message.data,
+                                profile = bitmap
                             )
                         }
                     }
+
                     NotificationPlaceConst.NOTIFICATION_TYPE_NEW_PLACE_ADDED -> {
                         sendPlaceNotification(this, title, body, message.data)
                     }
+
                     NotificationGeofenceConst.NOTIFICATION_TYPE_GEOFENCE -> {
                         sendGeoFenceNotification(this, title, body, message.data)
                     }

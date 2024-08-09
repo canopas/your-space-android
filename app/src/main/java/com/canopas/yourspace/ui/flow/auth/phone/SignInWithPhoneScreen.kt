@@ -233,8 +233,7 @@ private fun PhoneTextField() {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_down),
                 contentDescription = null,
-                Modifier
-                    .padding(start = 12.dp),
+                modifier = Modifier.padding(start = 12.dp),
                 tint = AppTheme.colorScheme.textSecondary
             )
         }

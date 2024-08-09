@@ -5,13 +5,13 @@ import com.canopas.yourspace.data.service.place.ApiPlaceService
 import com.canopas.yourspace.data.service.place.GeoFenceService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,11 +30,12 @@ class GeofenceRepository @Inject constructor(
         listenForSpaceChange()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun listenForSpaceChange() {
         scope.launch {
             val currentUser = authService.currentUser?.id ?: return@launch
             spaceRepository.getUserSpaces(currentUser).flatMapConcat { spaces ->
-                val flows = spaces.filterNotNull().map { space ->
+                val flows = spaces.map { space ->
                     apiPlaceService.listenAllPlaces(space.id)
                 }
                 if (flows.isEmpty()) {
@@ -52,7 +53,7 @@ class GeofenceRepository @Inject constructor(
     suspend fun registerAllPlaces() {
         try {
             val currentUser = authService.currentUser?.id ?: return
-            val spaces = spaceRepository.getUserSpaces(currentUser).first().filterNotNull()
+            val spaces = spaceRepository.getUserSpaces(currentUser).first()
             spaces.forEach { space ->
                 val places = apiPlaceService.getPlaces(space.id)
                 geoFenceService.addGeofence(places)

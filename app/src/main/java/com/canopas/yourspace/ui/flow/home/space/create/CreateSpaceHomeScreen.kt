@@ -34,8 +34,7 @@ fun CreateSpaceHomeScreen() {
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AppTheme.colorScheme.surface),
-                title = {
-                },
+                title = {},
                 navigationIcon = {
                     IconButton(onClick = { viewModel.navigateBack() }) {
                         Icon(
@@ -46,7 +45,7 @@ fun CreateSpaceHomeScreen() {
                 }
             )
         }
-    ) {
+    ) { it ->
         CreateSpace(
             modifier = Modifier.padding(it),
             spaceName = state.spaceName,

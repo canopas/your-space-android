@@ -241,7 +241,6 @@ fun MainApp(viewModel: MainViewModel) {
                     locateOnMapViewModel.navigateBack(latitude, longitude, placeName)
                 }
             }
-
             LocateOnMapScreen()
         }
 

@@ -1,6 +1,7 @@
 package com.canopas.yourspace.data.service.location
 
 import com.canopas.yourspace.data.models.location.LocationJourney
+import com.canopas.yourspace.data.models.location.LocationTable
 import com.canopas.yourspace.data.storage.room.LocationTableDatabase
 import com.canopas.yourspace.data.utils.Config
 import com.canopas.yourspace.data.utils.LocationConverters
@@ -50,6 +51,13 @@ class ApiJourneyService @Inject constructor(
             update_at = updateAt ?: createdAt ?: System.currentTimeMillis()
         )
 
+        val location = LocationTable(
+            userId = userId,
+            lastFiveMinutesLocations = routeDistance.toString(),
+            lastLocationJourney = routeDuration.toString()
+        )
+
+        locationTableDatabase.locationTableDao().insertLocationData(location)
         journey.updateLocationJourney(userId)
 
         docRef.set(journey).await()
@@ -65,11 +73,12 @@ class ApiJourneyService @Inject constructor(
     }
 
     private suspend fun LocationJourney.updateLocationJourney(userId: String) {
-        locationTableDatabase.locationTableDao().getLocationData(userId).let { locationTable ->
-            val newLocationData =
-                locationTable?.copy(lastLocationJourney = converters.journeyToString(this))
+        locationTableDatabase.locationTableDao().getLocationData(userId)?.let { locationTable ->
 
-            newLocationData?.let {
+            val newLocationData =
+                locationTable.copy(lastLocationJourney = converters.journeyToString(this))
+
+            newLocationData.let {
                 try {
                     locationTableDatabase.locationTableDao().updateLocationTable(it)
                 } catch (e: Exception) {

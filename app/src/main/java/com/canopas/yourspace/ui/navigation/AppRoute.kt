@@ -6,7 +6,6 @@ import androidx.navigation.navArgument
 
 interface AppRoute {
     val arguments: List<NamedNavArgument>
-
     val path: String
 }
 

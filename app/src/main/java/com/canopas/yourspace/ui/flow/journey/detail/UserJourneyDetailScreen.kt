@@ -72,9 +72,9 @@ fun UserJourneyDetailScreen() {
         viewModel.onDateSelected(calendar.timeInMillis, startTimeStamp)
     }
 
-    Scaffold(topBar = {
-        JourneyTopBar(state.journey, viewModel::navigateBack)
-    }) {
+    Scaffold(
+        topBar = { JourneyTopBar(state.journey, viewModel::navigateBack) }
+    ) {
         Column(
             modifier = Modifier
                 .padding(it)

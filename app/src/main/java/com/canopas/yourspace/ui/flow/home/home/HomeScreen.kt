@@ -83,14 +83,14 @@ fun HomeScreen(verifyingSpace: Boolean) {
             }
         }
         /* bottomBar = {
-             AnimatedVisibility(
-                 visible = !hideBottomBar,
-                 enter = slideInVertically(tween(100)) { it },
-                 exit = slideOutVertically(tween(100)) { it }
-             ) {
-                 HomeBottomBar(navController)
-             }
-         }*/
+              AnimatedVisibility(
+                  visible = !hideBottomBar,
+                  enter = slideInVertically(tween(100)) { it },
+                  exit = slideOutVertically(tween(100)) { it }
+              ) {
+                  HomeBottomBar(navController)
+              }
+          }*/
     )
 }
 
